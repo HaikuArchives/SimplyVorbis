@@ -1,0 +1,35 @@
+Simply Vorbis 0.1 RC 3
+
+Welcome! In case you missed it, the digital music revolution is all around us. SimplyVorbis is a program which is intended to make it about as easy to have digital music available as it is humanly possible.
+
+Features:
+
+- Make digital music files without having to think about anything except which songs you want
+- All music files on BeOS disks can be found with queries on drives which support them (CL-Amp, etc)
+- Organize your files on your hard drive by artist, album, both, or not at all
+- Automatically name your files by track name, optionally including the artist's name, album name, or both
+- Automatic lookups of the names of the artist, the album, and all of the songs on the CD.
+- Convert more than one CD simultaneously if you have more than one CD drive on your computer
+- Automatically generate playlists compatible with CL-Amp and SoundPlay
+
+About this version:
+
+	The release candidates of SimplyVorbis have brought in some polish, a few nice features, and a number bugfixes. Thanks to Fredrik Moden, there is the base for the Zeta Locale Kit. Things aren't where they need to be, but they're getting there on this front. Alt+Up/Down changes tracks and makes it easy to edit track names. The code which looks up CDs on the Internet has seen some bugfixes. The Ogg Vorbis encoding libraries have been upgraded to fix some problems with skipping. Artist and Album editing have had problems which are now fixed. As always, should you find any bugs or have a request for a feature, please let me know at darkwyrm@earthlink.net
+
+What in the world is Ogg Vorbis?
+
+	In layman's terms, Ogg Vorbis (or just Vorbis) is another kind of MP3 which is completely free and does not make dumb restrictions like allowing me to burn a song on only 3 CDs before it won't let me put it on any more. WMA (Windows Media Player) and AAC (iPod/iTunes) both have the potential to enforce crazy things like this. Music downloaded from iTunes and most other music download services add these restrictions. With Ogg Vorbis, as with MP3, you are free to choose whether or not you follow copyright law. Developers like me also don't have to worry about licensing as with MP3 and other ways of storing music.
+
+Will Ogg Vorbis work with my iPod? What about Windows?
+
+	Absolutely, in both cases. iTunes doesn't support it by default, but you can download support for it and there are directions out there on the Web which will tell you how to install it. There is a DirectShow addon for Windows that allows Windows Media Player to play Ogg Vorbis files. Winamp can already play them. Linux has numerous tools to support Ogg Vorbis. In all of these cases, you won't have the availability of the query support that you would under BeOS, but you should have everything else, including in-file information which is properly filled in. Personally, I avoid using Windows Media Player and instead use Quintessential Player ( http://www.quinnware.com/ ) by Quinnware. It's somewhat more usable than WMP, doesn't phone home like the newer versions of WinAmp, natively supports Ogg Vorbis, is fully skinnable, and doesn't cost anything. I don't work for Quinnware or anything, but I really like it.
+
+I want my MP3!
+
+	OK, that's your choice. :-) SimplyVorbis does support making MP3s, assuming that you have a copy of BeOS R5 Pro or Zeta, which come with an MP3 encoder. While it would be very much possible to build MP3 support in SimplyVorbis in the same way as Ogg Vorbis support, there would be one sticky issue - a patent issue. To make a long story short (from www.mp3licensing.com), you do not need a license for any personal, non-commerical use. However, any software developers who want to develop anything remotely commercial must pay for the ability to do *anything* with MP3s at a per-copy-sold rate.
+	Like most other software I have written, SimplyVorbis is released under a license where you can do just about anything you like with it except say that you wrote the code in it, and I feel that anyone who wants to use SimplyVorbis as the basis for a commercial app should not have to concern themselves with licensing issues. It is also a legal gray area which I am not about to touch with a 100-meter pole. Considering that Ogg Vorbis is (a) free (as in beer and as in speech) and (b) better quality for file size, it is the default format.
+
+My machine completely freezes up!
+
+	This is a known problem with BeOS itself and is not caused directly by SimplyVorbis. Some CD drives -- especially cheap ones like the ones on my computer :-( -- cause BeOS to lock up occasionally. Aside from making a new CD driver (which I can't do) or replacing your drive (which is up to you), I can't fix it.
+
