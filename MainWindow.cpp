@@ -453,7 +453,6 @@ void MainView::BuildGUI(void)
 	fTrackList = new BListView(r,"tracklist",B_MULTIPLE_SELECTION_LIST,
 				B_FOLLOW_ALL);
 	fTrackList->SetSelectionMessage(new BMessage(M_CHOOSE_TRACK));
-	fTrackList->SetInvocationMessage(new BMessage(M_START_ENCODING));
 	BScrollView *scroller = new BScrollView("scroller",fTrackList,
 							B_FOLLOW_ALL,0,false,true);
 	
