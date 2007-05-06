@@ -74,14 +74,14 @@ RipView::RipView(const BRect &frame, CDAudioDevice *cd)
 
 RipView::~RipView(void)
 {
-	if(fRipThread!=-1)
+	if (fRipThread!=-1)
 		kill_thread(fRipThread);
 	delete_sem(abort_thread);
 }
 
 void RipView::Go(void)
 {
-	if(fRipThread!=-1)
+	if (fRipThread!=-1)
 		Stop();
 	
 	fRipThread = spawn_thread(RipThread,"rip thread",B_LOW_PRIORITY,this);
@@ -90,7 +90,7 @@ void RipView::Go(void)
 
 void RipView::Stop(void)
 {
-	if(fRipThread!=-1)
+	if (fRipThread!=-1)
 	{
 		acquire_sem(abort_thread);
 		release_sem(abort_thread);
@@ -139,34 +139,34 @@ int32 RipView::RipThread(void *data)
 	prefsLock.Lock();
 	
 	int16 foldermode;
-	if(preferences.FindInt16("foldermode",&foldermode)!=B_OK)
+	if (preferences.FindInt16("foldermode",&foldermode)!=B_OK)
 		foldermode=1;
 	
 	int16 trackname;
-	if(preferences.FindInt16("namestyle",&trackname)!=B_OK)
+	if (preferences.FindInt16("namestyle",&trackname)!=B_OK)
 		trackname=0;
 	
 	int16 bitrate;
-	if(preferences.FindInt16("bitrate",&bitrate)!=B_OK)
+	if (preferences.FindInt16("bitrate",&bitrate)!=B_OK)
 		bitrate=1;
 	
 	BString destfolder;
-	if(preferences.FindString("path",&destfolder)!=B_OK)
+	if (preferences.FindString("path",&destfolder)!=B_OK)
 		destfolder="/boot/home/music";
 	
 	bool use_mp3;
-	if(preferences.FindBool("usemp3",&use_mp3)!=B_OK)
+	if (preferences.FindBool("usemp3",&use_mp3)!=B_OK)
 		use_mp3=false;
 	
-	if(use_mp3 && (!gMP3Format || !gMP3Codec))
+	if (use_mp3 && (!gMP3Format || !gMP3Codec))
 		use_mp3=false;
 	
 	bool make_playlist;
-	if(preferences.FindBool("makeplaylist",&make_playlist)!=B_OK)
+	if (preferences.FindBool("makeplaylist",&make_playlist)!=B_OK)
 		make_playlist=true;
 	
 	BString playlistfolder;
-	if(preferences.FindString("playlistfolder",&playlistfolder)!=B_OK)
+	if (preferences.FindString("playlistfolder",&playlistfolder)!=B_OK)
 	{
 		playlistfolder=destfolder;
 		playlistfolder << "/playlists";
@@ -179,7 +179,7 @@ int32 RipView::RipThread(void *data)
 	
 	dev_t destDevice = dev_for_path(destfolder.String());
 	BVolume volume(destDevice);
-	if(!volume.KnowsAttr())
+	if (!volume.KnowsAttr())
 	{
 		write_attributes=false;
 		//printf("Volume for %s doesn't support attributes\n",destfolder.String());
@@ -209,10 +209,10 @@ int32 RipView::RipThread(void *data)
 			break;
 		}
 	}
-	if(create_directory(destfolder.String(),0777)!=B_OK)
+	if (create_directory(destfolder.String(),0777)!=B_OK)
 	{
 		BEntry dir(destfolder.String());
-		if(!dir.Exists())
+		if (!dir.Exists())
 		{
 			BString errormsg;
 			#ifdef SYS_ZETA
@@ -241,10 +241,10 @@ int32 RipView::RipThread(void *data)
 	}
 	
 	// make the directory only if the user wants to create playlists
-	if(make_playlist && create_directory(playlistfolder.String(),0777)!=B_OK)
+	if (make_playlist && create_directory(playlistfolder.String(),0777)!=B_OK)
 	{
 		BEntry playdir(playlistfolder.String());
-		if(!playdir.Exists())
+		if (!playdir.Exists())
 		{
 			BString errormsg;
 			#ifdef SYS_ZETA			
@@ -269,7 +269,7 @@ int32 RipView::RipThread(void *data)
 	}
 	
 	// *Sigh* FAT32 volumes don't support use of question marks. I wonder what else... :(
-	if(!write_attributes)
+	if (!write_attributes)
 	{
 		destfolder.RemoveAll("?");
 		playlistfolder.RemoveAll("?");
@@ -313,9 +313,9 @@ int32 RipView::RipThread(void *data)
 	
 	for(int32 i=0; i<gTrackList.CountItems(); i++)
 	{
-		if(*(gTrackList.ItemAt(i)))
+		if (*(gTrackList.ItemAt(i)))
 		{
-			if(gCDDrive.IsDataTrack(i))
+			if (gCDDrive.IsDataTrack(i))
 			{
 				*(gTrackList.ItemAt(i)) = false;
 				continue;
@@ -330,21 +330,21 @@ int32 RipView::RipThread(void *data)
 	BFile playlistfile;
 	BString playlistfilename=playlistfolder;
 	
-	if(make_playlist)
+	if (make_playlist)
 	{
 		playlistfilename << "/" << gCDData.Artist() << " - " << gCDData.Album() << ".m3u";
 		
 		// Append to playlists instead of overwriting them
 		BEntry playlistentry(playlistfilename.String());
-		if(playlistentry.Exists())
+		if (playlistentry.Exists())
 		{
-			if(playlistfile.SetTo(playlistfilename.String(),B_READ_WRITE)==B_OK)
+			if (playlistfile.SetTo(playlistfilename.String(),B_READ_WRITE)==B_OK)
 			{
 				// HACK: This works around a bug in R5's BFile::Seek implementation
 //				playlistfile.Seek(SEEK_END,0);
 				off_t filesize;
 				playlistfile.GetSize(&filesize);
-				if(filesize>0)
+				if (filesize>0)
 				{
 					char data[filesize];
 					playlistfile.Read(&data,filesize);
@@ -356,7 +356,7 @@ int32 RipView::RipThread(void *data)
 		else
 			playlistfile.SetTo(playlistfilename.String(),B_READ_WRITE | B_CREATE_FILE);
 		
-		if(playlistfile.InitCheck()!=B_OK)
+		if (playlistfile.InitCheck()!=B_OK)
 		{
 			BString errormsg;
 			#ifdef SYS_ZETA
@@ -375,17 +375,17 @@ int32 RipView::RipThread(void *data)
 			#endif	
 
 			alert->Go();
-			make_playlist=false;
+			make_playlist = false;
 		}
 	}
 	
 	BString syscmd;
 	BMessenger msgr(view);
-	bool copyfailed=false;
+	bool copyfailed = false;
 	bool showfailalert = 0;
-	for(int32 i=0; i<gTrackList.CountItems(); i++)
+	for (int32 i = 0; i < gTrackList.CountItems(); i++)
 	{
-		if(*(gTrackList.ItemAt(i)))
+		if (*(gTrackList.ItemAt(i)))
 		{
 			view->Window()->Lock();
 			BStringItem *oldtrack = (BStringItem*)view->fRipList->RemoveItem(0L);
@@ -393,8 +393,17 @@ int32 RipView::RipThread(void *data)
 			delete oldtrack;
 			
 			BString filename(trackPrefix);
-			filename+=gCDData.TrackAt(i);
+			filename += gCDData.TrackAt(i);
+			
+			// FAT32 is such a pain in the neck here. Certain characters which are *just* *fine* for
+			// other OSes are illegal. Just for the user's sake, we will constrain ourselves to its limits.
+			// This means that question marks, double quotes, and colons will be substituted or removed.
+			// Although it has not popped up in testing, backslashes are also substituted just in case
+			filename.RemoveSet("?");
 			filename.ReplaceAll("/", "-");
+			filename.ReplaceAll("\\", "-");
+			filename.ReplaceAll("\"", "'");
+			filename.ReplaceAll(":", "-");
 			
 			// Set things up for the progress bar for ripping this particular track
 			view->Window()->Lock();
@@ -420,35 +429,35 @@ int32 RipView::RipThread(void *data)
 			
 			status_t ripstat=B_OK;
 			
-			if(use_mp3)
+			if (use_mp3)
 				ripstat=ConvertTrack(gCDDrive.GetDrivePath(),ripname.String(),i+1,*gMP3Format,
 									*gMP3Codec,&msgr,abort_thread);
 			else
 				ripstat=VorbifyTrack(gCDDrive.GetDrivePath(),ripname.String(),i+1,&msgr,abort_thread);
 			
-			if(ripstat==B_INTERRUPTED)
+			if (ripstat==B_INTERRUPTED)
 			{
 				//  This will unblock the window
 				view->fRipThread = -1;
 				view->Window()->PostMessage(M_STOP_ENCODING);
 				release_sem(abort_thread);
 				BEntry entry(ripname.String());
-				if(entry.Exists())
+				if (entry.Exists())
 					entry.Remove();
 				return -1;
 			}
 			else
-			if(ripstat!=B_OK)
+			if (ripstat!=B_OK)
 			{
 				// Because things aren't really accurate on some CDs on the last audio track, 
 				// we bear with it.
-				if(!gCDDrive.IsDataTrack(i+1))
+				if (!gCDDrive.IsDataTrack(i+1))
 				{
 					view->Window()->Lock();
 					view->fProgressBar->SetText(_T("Couldn't read song from the CD. Sorry!"));
 					view->Window()->Unlock();
 					BEntry entry(ripname.String());
-					if(entry.Exists())
+					if (entry.Exists())
 						entry.Remove();
 					continue;
 				}
@@ -481,16 +490,16 @@ int32 RipView::RipThread(void *data)
 			
 			BNode node(ripname.String());
 #ifndef FAKE_RIPPING
-			if(node.InitCheck()==B_OK)
+			if (node.InitCheck()==B_OK)
 #endif
 			{
 				BNodeInfo nodeinfo(&node);
-				if(nodeinfo.InitCheck()==B_OK)
+				if (nodeinfo.InitCheck()==B_OK)
 					nodeinfo.SetType( use_mp3 ? "audio/x-mpeg" : "audio/x-vorbis");
 				
-				if(write_attributes)
+				if (write_attributes)
 				{
-					if(strlen(gCDData.Genre())>0)
+					if (strlen(gCDData.Genre())>0)
 						node.WriteAttr("Audio:Genre",B_STRING_TYPE,0,gCDData.Genre(),strlen(gCDData.Genre())+1);
 					node.WriteAttr("Audio:Comment",B_STRING_TYPE,0,"Created by SimplyVorbis",
 									strlen("Created by SimplyVorbis")+1);
@@ -507,7 +516,7 @@ int32 RipView::RipThread(void *data)
 					node.WriteAttr("Audio:Bitrate",B_STRING_TYPE,0,(const void *)"128", strlen("128")+1);
 					
 					cdaudio_time tracktime;
-					if(gCDDrive.GetTimeForTrack(i+1,tracktime))
+					if (gCDDrive.GetTimeForTrack(i+1,tracktime))
 					{
 						char timestring[20];
 						
@@ -515,7 +524,7 @@ int32 RipView::RipThread(void *data)
 						// we have issues related to misreported track times on an enhanced CD. In this
 						// case, we make use of the riptime variable declared above to find out
 						// just how much was actually ripped in order to write the proper playing time
-						if(ripstat!=B_OK)
+						if (ripstat!=B_OK)
 							sprintf(timestring,"%.2ld:%.2ld",rippedtime.minutes,rippedtime.seconds);
 						else
 							sprintf(timestring,"%.2ld:%.2ld",tracktime.minutes,tracktime.seconds);
@@ -535,14 +544,14 @@ int32 RipView::RipThread(void *data)
 				inString.CharacterEscape("<> '\"\\|?[]{}():;`,",'\\');
 				syscmd << " -a " << inString;
 				
-				if(strlen(gCDData.Genre())>0)
+				if (strlen(gCDData.Genre())>0)
 				{
 					inString = gCDData.Genre();
 					inString.CharacterEscape(FILE_ESCAPE_CHARACTERS,'\\');
 					syscmd << " -g " << inString;
 				}
 				
-				if(strlen(gCDData.Album())>0)
+				if (strlen(gCDData.Album())>0)
 				{
 					inString = gCDData.Album();
 					inString.CharacterEscape(FILE_ESCAPE_CHARACTERS,'\\');
@@ -566,12 +575,12 @@ int32 RipView::RipThread(void *data)
 				{
 					{
 #else
-				if(entry.Exists())
+				if (entry.Exists())
 				{
 					BDirectory destination(destfolder.String());
 				
 					// overwrite an existing file - allow re-ripping a file :)
-					if(entry.MoveTo(&destination,NULL,true)!=B_OK)
+					if (entry.MoveTo(&destination,NULL,true)!=B_OK)
 					{
 #endif
 						// chances are that if this failed, it's because the destination
@@ -586,7 +595,7 @@ int32 RipView::RipThread(void *data)
 						cmddest.CharacterEscape("<> '\"\\|[]{}():;`,",'\\');
 						
 						// *sigh* Certain characters are not allowed for FAT32 names.
-						if(!write_attributes)
+						if (!write_attributes)
 						{
 							cmddest.RemoveAll("?");
 							syscmd="cp -fp ";
@@ -599,10 +608,10 @@ int32 RipView::RipThread(void *data)
 						}
 						
 						//printf("Copy command: %s\n",syscmd.String());
-						if(system(syscmd.String())!=0)
+						if (system(syscmd.String())!=0)
 							copyfailed=true;
 						
-						if(!copyfailed)
+						if (!copyfailed)
 						{
 							entry.Remove();
 							syscmd = "settype -t \"audio/x-vorbis\" ";
@@ -627,7 +636,7 @@ int32 RipView::RipThread(void *data)
 
 #ifndef FAKE_RIPPING		
 		// This will show the alert once in the ripping process, as opposed to after every track.
-		if(showfailalert == 1)
+		if (showfailalert == 1)
 		{
 			copyfailed=false;
 			#ifdef SYS_ZETA
@@ -645,10 +654,10 @@ int32 RipView::RipThread(void *data)
 
 	}
 	
-	if(make_playlist)
+	if (make_playlist)
 	{
 		BNodeInfo nodeinfo(&playlistfile);
-		if(nodeinfo.InitCheck()==B_OK)
+		if (nodeinfo.InitCheck()==B_OK)
 			nodeinfo.SetType("text/x-playlist");
 		playlistfile.Unset();
 	}
