@@ -1,5 +1,5 @@
 #include "RipSupport.h"
-#include "vorbisenc.h"
+#include "vorbis/vorbisenc.h"
 #include <stdlib.h>
 
 //#define LOG_VORBIS
